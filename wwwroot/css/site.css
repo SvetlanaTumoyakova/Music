@@ -18,5 +18,20 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #E7E3FF;
+}
+
+.album-card{
+    transition: transform 0.3s;
+    margin-bottom: 20px;
+}
+
+.album-card:hover{
+    transform: translateY(-5px);
+}
+
+.card-img-top{
+    height:200px;
+    object-fit:cover;
 }
