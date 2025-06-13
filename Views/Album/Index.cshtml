@@ -12,7 +12,7 @@
                     <img src="@album.UrlImg" class="card-img-top img-contain" alt="..." />
                     <div class="card-body">
                         <h5 class="card-title">@album.Name</h5>
-                        <a href="#" class="btn btn-primary">Перейти</a>
+                        <a class="btn btn-primary" asp-controller="Album" asp-action="Details" asp-route-id="@album.Id">Перейти</a>
                     </div>
                 </div>
             </div>
