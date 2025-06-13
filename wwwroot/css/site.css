@@ -39,3 +39,7 @@ body {
 .img-contain {
     object-fit: contain;
 }
+.album-cover {
+    width: 200px; 
+    height: auto;
+}
