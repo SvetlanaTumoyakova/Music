@@ -10,6 +10,7 @@ builder.Services.AddDbContext<MusicDbContext>(options =>
 options.UseSqlServer(connection));
 
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
