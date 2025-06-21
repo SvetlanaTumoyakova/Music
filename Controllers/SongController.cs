@@ -10,8 +10,8 @@ namespace Music.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var album = await songRepository.GetAllAsync();
-            return View(album);
+            var song = await songRepository.GetAllAsync();
+            return View(song);
         }
     }
 }

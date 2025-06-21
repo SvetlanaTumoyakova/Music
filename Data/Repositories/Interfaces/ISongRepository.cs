@@ -5,6 +5,6 @@ namespace Music.Data.Repositories.Interfaces
 {
     public interface ISongRepository
     {
-        Task<Album> GetAllAsync();
+        Task<List<Song>> GetAllAsync();
     }
 }

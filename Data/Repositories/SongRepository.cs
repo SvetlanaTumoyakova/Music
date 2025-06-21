@@ -7,13 +7,10 @@ namespace Music.Data.Repositories
 {
     public class SongRepository(MusicDbContext context): ISongRepository
     {
-        public async Task<Album> GetAllAsync()
+        public async Task<List<Song>> GetAllAsync()
         {
-            var album = await context.Albums
-                .AsNoTracking()
-                .Include(album => album.Songs)
-                .FirstAsync(x => x.Id == 1);
-            return album;
+            var songs = await context.Songs.AsNoTracking().ToListAsync();
+            return songs;
         }
     }
 }
