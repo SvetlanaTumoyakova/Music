@@ -13,13 +13,9 @@ namespace Music.Data.Repositories
             return artists;
          }
 
-        public async Task<Artist> GetArtistDetailsByIdAsync(int id)
+        public void Add(Artist artist)
         {
-            var artist = await context.Artists
-                .AsNoTracking()
-                .Include(artist => artist.Albums)
-                .FirstAsync(x => x.Id == id);
-            return artist;
+            context.Artists.Add(artist);
         }
     }
 }

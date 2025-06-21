@@ -4,6 +4,7 @@
 @model List<Artist>
 <div class="container py-5">
     <h1 class="text-center mb-5 display-4">Популярные Артисты</h1>
+    <a class="btn btn-primary mb-3" asp-action="Create">Добавить нового исполнителя</a>
     <div class="row">
         @foreach (var artist in Model)
         {
@@ -12,7 +13,7 @@
                     <img src="@artist.UrlImg" class="card-img-top" alt="..." />
                     <div class="card-body">
                         <h5 class="card-title">@artist.Name</h5>
-                        <a class="btn btn-primary" asp-controller="Home" asp-action="Details" asp-route-id="@artist.Id">Перейти</a>
+                        <a class="btn btn-primary" asp-controller="Album" asp-action="Index" asp-route-id="@artist.Id">Перейти</a>
                     </div>
                 </div>
             </div>

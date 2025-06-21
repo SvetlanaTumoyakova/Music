@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Music.Data;
 using Music.Data.Repositories;
 using Music.Data.Repositories.Interfaces;
+using Music.Models;
 
 namespace Music.Controllers
 {
@@ -13,10 +14,12 @@ namespace Music.Controllers
             var artists = await artistRepository.GetAllAsync();
             return View(artists);
         }
-        public async Task<IActionResult> Details(int id)
+
+        [HttpPost]
+        public IActionResult Create(Artist artist)
         {
-            var artist = await artistRepository.GetArtistDetailsByIdAsync(id);
-            return View(artist);
+            artistRepository.Add(artist);
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         public IActionResult About()
