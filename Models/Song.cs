@@ -6,5 +6,6 @@
         public required string Name { get; set; }
         public required string UrlSong { get; set; }
         public required List<Album> Albums { get; set; }
+        public required List<Artist> Artists { get; set; }
     }
 }
