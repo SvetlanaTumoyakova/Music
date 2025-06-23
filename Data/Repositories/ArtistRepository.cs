@@ -30,6 +30,14 @@ namespace Music.Data.Repositories
             var artist = context.Artists.FirstOrDefault(artist => artist.Id == id);
                 return artist;
         }
+        public void Edit(Artist artist)
+        {
+            if (artist != null)
+            {
+                context.Artists.Update(artist);
+                context.SaveChanges();
+            }
+        }
         public void RemoveById(int id)
         {
             var artist = GetById(id);

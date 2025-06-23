@@ -9,6 +9,7 @@ namespace Music.Data.Repositories.Interfaces
         Task<Artist> GetArtistDetailsByIdAsync(int id);
         public void Add(Artist artist);
         Artist GetById(int id);
+        void Edit(Artist artist);
         void RemoveById(int id);
     }
 }

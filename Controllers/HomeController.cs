@@ -33,16 +33,20 @@ namespace Music.Controllers
         public IActionResult Edit(int id)
         {
             var artist = artistRepository.GetById(id);
+
             return View(artist);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Artist artist)
+        public IActionResult Edit(Artist artist)
         {
             var editArtist = artistRepository.GetById(artist.Id);
-            editArtist.Name = artist.Name;
-            editArtist.UrlImg = artist.UrlImg;
-
+            if(editArtist != null)
+            {
+                editArtist.Name = artist.Name;
+                editArtist.UrlImg = artist.UrlImg;
+                artistRepository.Edit(editArtist); 
+            }
             return RedirectToAction(nameof(Index), "Home");
         }
 
