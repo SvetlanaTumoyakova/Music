@@ -27,8 +27,17 @@ namespace Music.Data.Repositories
         }
         public Artist GetById(int id)
         {
-            var artist = context.Artists.First(artist => artist.Id == id);
+            var artist = context.Artists.FirstOrDefault(artist => artist.Id == id);
                 return artist;
+        }
+        public void RemoveById(int id)
+        {
+            var artist = GetById(id);
+            if (artist != null)
+            {
+                context.Artists.Remove(artist);
+                context.SaveChanges();
+            }
         }
     }
 }

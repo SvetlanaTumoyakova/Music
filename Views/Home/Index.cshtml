@@ -15,10 +15,13 @@
                         <h5 class="card-title">@artist.Name</h5>
                         <a class="btn btn-primary" asp-controller="Home" asp-action="Details" asp-route-id="@artist.Id">Перейти</a>
                     </div>
-                    @* <div class="container-fluid">
+                    <div class="container-fluid">
                         <a class="btn btn-primary" asp-controller="Home" asp-action="Edit" asp-route-id="@artist.Id">Редактировать</a>
-                        <a class="btn btn-primary" asp-controller="Home" asp-action="Remove" asp-route-id="@artist.Id">Удалить</a>
-                    </div> *@
+                        <form asp-controller="Home" asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@artist.Id" />
+                            <button type="submit" class="btn btn-primary">Удалить</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         }
