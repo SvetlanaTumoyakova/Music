@@ -1,16 +1,16 @@
-﻿@using Music.Models;
-@model Artist
+﻿@using Music.ViewModel
+@model ArtistViewModel
 
 <div class="row">
 	<div class="col-md-4">
-		<form asp-controller="Home" asp-action="Create">
+		<form asp-controller="Home" asp-action="Create" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="Name" class="me-4 mb-2">Имя</label>
 				<input asp-for="Name" id="Name"/>
 			</div>
 			<div class="form-group">
-				<label for="UrlImg" class="me-2 mb-3">UrlImg</label>
-				<input asp-for="UrlImg" id="UrlImg"/>
+				<label for="File" class="me-2 mb-3">UrlImg</label>
+				<input asp-for="File" type="file" id="UrlImg"/>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Добавить"/>

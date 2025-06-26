@@ -2,15 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using Music.Data;
 using Music.Data.Repositories;
 using Music.Data.Repositories.Interfaces;
+using Music.Uploadcare;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
+builder.Services.Configure<UploadcareKeys>(
+    builder.Configuration.GetSection("UploadcareKeys"));
 
 string connection = builder.Configuration.GetConnectionString("MusicDbConnection");
 builder.Services.AddDbContext<MusicDbContext>(options =>
 options.UseSqlServer(connection));
 
-builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 builder.Services.AddScoped<ISongRepository, SongRepository>();
 builder.Services.AddControllersWithViews();
 
