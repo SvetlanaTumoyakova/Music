@@ -22,7 +22,21 @@ body {
     background-color: #E7E3FF;
 }
 
-.album-card{
+.card {
+    width: 285px;
+    height: 250px;
+}
+.card-two {
+    width: 206px;
+    height: 310px;
+    background-color:white;
+}
+.card-three {
+    width: 200px;
+    height: 250px;
+}
+
+.album-card {
     transition: transform 0.3s;
     margin-bottom: 20px;
 }
@@ -43,10 +57,11 @@ body {
 .img-contain {
     object-fit: contain;
 }
-.album-cover {
-    width: 200px; 
-    height: auto;
-}
 .btn{
     font-size: 12px;
+}
+.btn-primary {
+    background-color: #c1b7f1;
+    color: #4C3B9D;
+    border-color: #c1b7f1;
 }

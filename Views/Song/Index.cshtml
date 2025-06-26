@@ -3,19 +3,19 @@
 }
 @model List<Song>
 
-<div class="container">
+<div class="container mt-4">
 	<div class="row">
 		<div class="col-lg-8">
 			<h2 class="mb-4">Песни</h2>
 			<div class="track-list">
-				@foreach(var song in Model)
+				@for(int i=0; i<Model.Count; i++)
 				{
+					var song = Model[i];
 					<div class="track-item">
-						<div class="track-number">1</div>
 						<div class="track-info">
-							<h6 class="mb-0">@song.Name</h6>
+							<h6 class="mb-2">@(i+1) @song.Name</h6>
 						</div>
-						<audio controls class="audio-player">
+						<audio controls class="audio-player mb-4">
 							<source src="@song.UrlSong" type="audio/mpeg"/>
 							Ваш браузер не поддерживает аудиоформат.
 						</audio>
