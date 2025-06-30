@@ -7,11 +7,32 @@ namespace Music.Data.Repositories
 {
     public class ArtistRepository(MusicDbContext context): IArtistRepository
     {
-         public async Task<List<Artist>> GetAllAsync()
-         {
-            var artists = await context.Artists.AsNoTracking().ToListAsync();
-            return artists;
-         }
+        public async Task<List<Artist>> GetAllAsync()
+        {
+        var artists = await context.Artists.AsNoTracking().ToListAsync();
+        return artists;
+        }
+        public Artist GetById(int id)
+        {
+            var artist = context.Artists.FirstOrDefault(artist => artist.Id == id);
+            return artist;
+        }
+        public Artist GetByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Имя исполнителя не может быть пустым.", nameof(name));
+            }
+
+            var artist = context.Artists.FirstOrDefault(artist => artist.Name.ToLower() == name.ToLower());
+
+            if (artist == null)
+            {
+                throw new KeyNotFoundException($"Исполнитель с именем '{name}' не найден.");
+            }
+
+            return artist;
+        }
         public void Add(Artist artist)
         {
            context.Artists.Add(artist);
@@ -24,11 +45,6 @@ namespace Music.Data.Repositories
                 .Include(artist => artist.Albums)
                 .FirstAsync(x => x.Id == id);
             return artist;
-        }
-        public Artist GetById(int id)
-        {
-            var artist = context.Artists.FirstOrDefault(artist => artist.Id == id);
-                return artist;
         }
         public void Edit(Artist artist)
         {

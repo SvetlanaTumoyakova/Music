@@ -48,7 +48,6 @@ namespace Music.Controllers
             _artistRepository.Add(artist);
             return RedirectToAction(nameof(Index), "Home");
         }
-
         public IActionResult Edit(int id)
         {
             var artist = _artistRepository.GetById(id);
