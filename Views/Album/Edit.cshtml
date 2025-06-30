@@ -1,0 +1,29 @@
+﻿@using Music.ViewModel
+@model AlbumViewModel
+
+<div class="row">
+	<div class="col-md-4">
+		<form asp-controller="Album" asp-action="Edit" method="post" enctype="multipart/form-data">
+			<input type="hidden" asp-for="Id"/>
+			<div class="form-group mb-3">
+				<label for="Name" class="mb-2">Имя</label>
+				<input asp-for="Name" id="Name" />
+			</div>
+			<div class="form-group mb-3">
+				<label for="YearOfIssue" class="mb-2">Имя</label>
+				<input asp-for="YearOfIssue" id="YearOfIssue" />
+			</div>
+			<div class="form-group mb-4">
+				<label for="File" class="mb-1">UrlImg</label>
+				<input asp-for="File" type="file" id="UrlImg" />
+			</div>
+			<div class="form-group mb-3">
+				<label for="ArtistName" class="mb-2">Название исполнителя</label>
+				<input asp-for="ArtistName" id="ArtistName" />
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Редактировать" />
+			</div>
+		</form>
+	</div>
+</div>

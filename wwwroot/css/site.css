@@ -28,12 +28,13 @@ body {
 }
 .card-two {
     width: 206px;
-    height: 310px;
+    height: 370px;
     background-color:white;
 }
 .card-three {
     width: 200px;
     height: 250px;
+    background-color: white;
 }
 
 .album-card {
@@ -41,7 +42,7 @@ body {
     margin-bottom: 20px;
 }
 
-.album-card:hover{
+.album-card:hover {
     transform: translateY(-5px);
 }
 
@@ -64,4 +65,7 @@ body {
     background-color: #c1b7f1;
     color: #4C3B9D;
     border-color: #c1b7f1;
+}
+.marginButtom{
+    margin-bottom: 100px;
 }
