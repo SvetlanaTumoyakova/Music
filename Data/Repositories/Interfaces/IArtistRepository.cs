@@ -6,11 +6,11 @@ namespace Music.Data.Repositories.Interfaces
     public interface IArtistRepository
     {
         Task<List<Artist>> GetAllAsync();
-        Artist GetById(int id);
-        Artist GetByName(string name);
+        Task<Artist> GetByIdAsync(int id);
+        Task<Artist> GetByNameAsync(string name);
         Task<Artist> GetArtistDetailsByIdAsync(int id);
-        void Add(Artist artist);
-        void Edit(Artist artist);
-        void RemoveById(int id);
+        Task AddASync(Artist artist);
+        Task EditAsync(Artist artist);
+        Task RemoveByIdAsync(int id);
     }
 }

@@ -40,20 +40,32 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ArtistViewModel artistViewModel)
         {
-            var urlImg =  await _photoRepository.UploadPhotoAsync(artistViewModel.File);
-            var artist = new Artist
+            try
             {
-                Name = artistViewModel.Name,
-                UrlImg = urlImg,
-            };
-            _artistRepository.Add(artist);
-
+                var urlImg =  await _photoRepository.UploadPhotoAsync(artistViewModel.File);
+                var artist = new Artist
+                {
+                    Name = artistViewModel.Name,
+                    UrlImg = urlImg,
+                };
+                await _artistRepository.AddASync(artist);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(artistViewModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(artistViewModel);
+            }
             var nameController = ControllerHelper.GetName<HomeController>();
             return RedirectToAction(nameof(Index), nameController);
         }
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var artist = _artistRepository.GetById(id);
+            var artist = await _artistRepository.GetByIdAsync(id);
             if(artist == null)
             {
                 return NotFound();
@@ -71,28 +83,42 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ArtistViewModel artistViewModel)
         {
-            var editArtist = _artistRepository.GetById(artistViewModel.Id);
-            if (editArtist == null)
+            try
             {
-                return NotFound();
+                var editArtist = await _artistRepository.GetByIdAsync(artistViewModel.Id);
+                if (editArtist == null)
+                {
+                    return NotFound();
+                }
+
+                editArtist.Name = artistViewModel.Name;
+
+                if (artistViewModel.File != null)
+                {
+                    var urlImg =  await _photoRepository.UploadPhotoAsync(artistViewModel.File);
+                    editArtist.UrlImg = urlImg;
+                }
+                await _artistRepository.EditAsync(editArtist);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(artistViewModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(artistViewModel);
             }
 
-            editArtist.Name = artistViewModel.Name;
-
-            if (artistViewModel.File != null)
-            {
-                var urlImg =  await _photoRepository.UploadPhotoAsync(artistViewModel.File);
-                editArtist.UrlImg = urlImg;
-            }
-            _artistRepository.Edit(editArtist);
             var nameController = ControllerHelper.GetName<HomeController>();
             return RedirectToAction(nameof(Index), nameController);
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task <IActionResult> Delete(int id)
         {
-            _artistRepository.RemoveById(id);
+            await _artistRepository.RemoveByIdAsync(id);
 
             var nameController = ControllerHelper.GetName<HomeController>();
             return RedirectToAction(nameof(Index), nameController);

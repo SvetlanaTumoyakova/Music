@@ -12,11 +12,11 @@ namespace Music.Data.Repositories
             var albums = await context.Albums.AsNoTracking().ToListAsync();
             return albums;
         }
-        public Album GetById(int id)
+        public async Task<Album> GetByIdAsync(int id)
         {
-            var album = context.Albums
+            var album = await context.Albums
            .Include(album => album.Artists)
-           .FirstOrDefault(album => album.Id == id);
+           .FirstOrDefaultAsync(album => album.Id == id);
             return album;
         }
         public async Task<Album> GetDetailsByIdAsync(int id)
@@ -27,27 +27,27 @@ namespace Music.Data.Repositories
                 .FirstAsync(x => x.Id == id);
             return album;
         }
-        public void Add(Album album)
+        public async Task AddAsync(Album album)
         {
             context.Albums.Add(album);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Edit(Album album)
+        public async Task EditAsync(Album album)
         {
             if (album != null)
             {
                 context.Albums.Update(album);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
-        public void RemoveById(int id)
+        public async Task RemoveByIdAsync(int id)
         {
-            var album = GetById(id);
+            var album = await GetByIdAsync(id);
             if (album != null)
             {
                 context.Albums.Remove(album);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

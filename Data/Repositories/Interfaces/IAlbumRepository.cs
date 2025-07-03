@@ -8,10 +8,10 @@ namespace Music.Data.Repositories.Interfaces
     public interface IAlbumRepository
     {
         Task<List<Album>> GetAllAsync();
-        Album GetById(int id);
+        Task<Album> GetByIdAsync(int id);
         Task<Album> GetDetailsByIdAsync(int id);
-        void Add(Album album);
-        void Edit(Album album);
-        void RemoveById(int id);
+        Task AddAsync(Album album);
+        Task EditAsync(Album album);
+        Task RemoveByIdAsync(int id);
     }
 }

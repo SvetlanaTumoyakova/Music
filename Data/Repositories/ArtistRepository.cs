@@ -12,31 +12,26 @@ namespace Music.Data.Repositories
         var artists = await context.Artists.AsNoTracking().ToListAsync();
         return artists;
         }
-        public Artist GetById(int id)
+        public async Task<Artist> GetByIdAsync(int id)
         {
-            var artist = context.Artists.FirstOrDefault(artist => artist.Id == id);
+            var artist = await context.Artists.FirstOrDefaultAsync(artist => artist.Id == id);
             return artist;
         }
-        public Artist GetByName(string name)
+        public async Task<Artist> GetByNameAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Имя исполнителя не может быть пустым.", nameof(name));
+                return null;
             }
 
-            var artist = context.Artists.FirstOrDefault(artist => artist.Name.ToLower() == name.ToLower());
-
-            if (artist == null)
-            {
-                throw new KeyNotFoundException($"Исполнитель с именем '{name}' не найден.");
-            }
+            var artist = await context.Artists.FirstOrDefaultAsync(artist => artist.Name.ToLower() == name.ToLower());
 
             return artist;
         }
-        public void Add(Artist artist)
+        public async Task AddASync(Artist artist)
         {
            context.Artists.Add(artist);
-           context.SaveChanges();
+           await context.SaveChangesAsync();
         }
         public async Task<Artist> GetArtistDetailsByIdAsync(int id)
         {
@@ -46,21 +41,21 @@ namespace Music.Data.Repositories
                 .FirstAsync(x => x.Id == id);
             return artist;
         }
-        public void Edit(Artist artist)
+        public async Task EditAsync(Artist artist)
         {
             if (artist != null)
             {
                 context.Artists.Update(artist);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
-        public void RemoveById(int id)
+        public async Task RemoveByIdAsync(int id)
         {
-            var artist = GetById(id);
+            var artist = await GetByIdAsync(id);
             if (artist != null)
             {
                 context.Artists.Remove(artist);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

@@ -45,7 +45,7 @@ namespace Music.Controllers
                 }
 
                 var urlImg = await _photoRepository.UploadPhotoAsync(albumViewModel.File);
-                var artist = _artistRepository.GetByName(albumViewModel.ArtistName);
+                var artist = await _artistRepository.GetByNameAsync(albumViewModel.ArtistName);
 
                 if (artist == null)
                 {
@@ -59,7 +59,7 @@ namespace Music.Controllers
                     UrlImg = urlImg,
                     Artists = new List<Artist> { artist }
                 };
-                _albumRepository.Add(album);
+                await _albumRepository.AddAsync(album);
             }
             catch (InvalidOperationException ex)
             {
@@ -76,9 +76,9 @@ namespace Music.Controllers
             return RedirectToAction(nameof(Index), nameController);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var album = _albumRepository.GetById(id);
+            var album = await _albumRepository.GetByIdAsync(id);
             if (album == null)
             {
                 return NotFound();
@@ -98,40 +98,52 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AlbumViewModel albumViewModel)
         {
-            var editAlbum = _albumRepository.GetById(albumViewModel.Id);
-            if (editAlbum == null)
+            try
             {
-                return NotFound();
+                var editAlbum = await _albumRepository.GetByIdAsync(albumViewModel.Id);
+                if (editAlbum == null)
+                {
+                    return NotFound();
+                }
+
+                editAlbum.Name = albumViewModel.Name;
+                editAlbum.YearOfIssue = albumViewModel.YearOfIssue;
+
+                if (albumViewModel.File != null)
+                {
+                    var urlImg = await _photoRepository.UploadPhotoAsync(albumViewModel.File);
+                    editAlbum.UrlImg = urlImg;
+                }
+
+                var artist = await _artistRepository.GetByNameAsync(albumViewModel.ArtistName);
+                if (artist == null)
+                {
+                    throw new Exception("Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
+                }
+
+                editAlbum.Artists = new List<Artist> { artist };
+
+                await _albumRepository.EditAsync(editAlbum);
             }
-
-            editAlbum.Name = albumViewModel.Name;
-            editAlbum.YearOfIssue = albumViewModel.YearOfIssue;
-
-            if (albumViewModel.File != null)
+            catch (InvalidOperationException ex)
             {
-                var urlImg = await _photoRepository.UploadPhotoAsync(albumViewModel.File);
-                editAlbum.UrlImg = urlImg;
-            }
-
-            var artist = _artistRepository.GetByName(albumViewModel.ArtistName);
-            if (artist == null)
-            {
-                ModelState.AddModelError("ArtistName", "Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
+                ViewBag.ErrorMessage = ex.Message;
                 return View(albumViewModel);
             }
-
-            editAlbum.Artists = new List<Artist> { artist };
-
-            _albumRepository.Edit(editAlbum);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(albumViewModel);
+            }
 
             var nameController = ControllerHelper.GetName<AlbumController>();
             return RedirectToAction(nameof(Index), nameController);
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _albumRepository.RemoveById(id);
+            await _albumRepository.RemoveByIdAsync(id);
 
             var nameController = ControllerHelper.GetName<AlbumController>();
             return RedirectToAction(nameof(Index), nameController);
