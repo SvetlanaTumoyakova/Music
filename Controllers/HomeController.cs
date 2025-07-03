@@ -16,8 +16,8 @@ namespace Music.Controllers
     public class HomeController : Controller
     {
         private readonly IArtistRepository _artistRepository;
-        private readonly IPhotoRepository _photoRepository;
-        public HomeController(IArtistRepository artistRepository, IPhotoRepository photoRepository)
+        private readonly IFileRepository _photoRepository;
+        public HomeController(IArtistRepository artistRepository, IFileRepository photoRepository)
         {
             _artistRepository = artistRepository;
             _photoRepository = photoRepository;

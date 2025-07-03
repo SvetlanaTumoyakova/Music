@@ -4,6 +4,8 @@
 @model List<Artist>
 <div class="container py-3">
     <h1 class="text-center mb-4 display-5">Популярные Артисты</h1>
+
+
     <a class="btn btn-primary mb-3" asp-controller="Home" asp-action="Create">Добавить нового исполнителя</a>
     <div class="row">
         @foreach (var artist in Model)

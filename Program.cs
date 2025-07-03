@@ -6,7 +6,7 @@ using Music.Uploadcare;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.Configure<UploadcareKeys>(
     builder.Configuration.GetSection("UploadcareKeys"));
 

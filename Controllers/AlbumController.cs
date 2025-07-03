@@ -9,9 +9,9 @@ namespace Music.Controllers
     public class AlbumController : Controller
     {
         private readonly IAlbumRepository _albumRepository;
-        private readonly IPhotoRepository _photoRepository;
+        private readonly IFileRepository _photoRepository;
         private readonly IArtistRepository _artistRepository;
-        public AlbumController(IAlbumRepository albumRepository, IPhotoRepository photoRepository, IArtistRepository artistRepository)
+        public AlbumController(IAlbumRepository albumRepository, IFileRepository photoRepository, IArtistRepository artistRepository)
         {
             _albumRepository = albumRepository;
             _photoRepository = photoRepository;
@@ -37,24 +37,41 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AlbumViewModel albumViewModel)
         {
-            var urlImg = await _photoRepository.UploadPhotoAsync(albumViewModel.File);
-
-            var artist = _artistRepository.GetByName(albumViewModel.ArtistName);
-
-            if (artist == null)
+            try
             {
-                ModelState.AddModelError("ArtistName", "Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
+                if (albumViewModel.File == null || albumViewModel.File.Length == 0)
+                {
+                    throw new Exception("Файл не выбран или пустой. Пожалуйста, выберите файл.");
+                }
+
+                var urlImg = await _photoRepository.UploadPhotoAsync(albumViewModel.File);
+                var artist = _artistRepository.GetByName(albumViewModel.ArtistName);
+
+                if (artist == null)
+                {
+                    throw new Exception("Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
+                }
+
+                var album = new Album
+                {
+                    Name = albumViewModel.Name,
+                    YearOfIssue = albumViewModel.YearOfIssue,
+                    UrlImg = urlImg,
+                    Artists = new List<Artist> { artist }
+                };
+                _albumRepository.Add(album);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(albumViewModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
                 return View(albumViewModel);
             }
 
-            var album = new Album
-            {
-                Name = albumViewModel.Name,
-                YearOfIssue = albumViewModel.YearOfIssue,
-                UrlImg = urlImg,
-                Artists = new List<Artist> { artist }
-            };
-            _albumRepository.Add(album);
             var nameController = ControllerHelper.GetName<AlbumController>();
             return RedirectToAction(nameof(Index), nameController);
         }
