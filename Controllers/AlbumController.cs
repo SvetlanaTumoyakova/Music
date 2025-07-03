@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Music.Data.Repositories.Interfaces;
+using Music.Helper;
 using Music.Models;
 using Music.ViewModel;
 
@@ -40,11 +41,11 @@ namespace Music.Controllers
 
             var artist = _artistRepository.GetByName(albumViewModel.ArtistName);
 
-        if (artist == null)
-        {
-            ModelState.AddModelError("ArtistName", "Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
-            return View(albumViewModel);
-        }
+            if (artist == null)
+            {
+                ModelState.AddModelError("ArtistName", "Исполнитель не найден. Пожалуйста, введите корректное имя исполнителя.");
+                return View(albumViewModel);
+            }
 
             var album = new Album
             {
@@ -54,7 +55,8 @@ namespace Music.Controllers
                 Artists = new List<Artist> { artist }
             };
             _albumRepository.Add(album);
-            return RedirectToAction(nameof(Index), "Album");
+            var nameController = ControllerHelper.GetName<AlbumController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
 
         public IActionResult Edit(int id)
@@ -104,14 +106,18 @@ namespace Music.Controllers
             editAlbum.Artists = new List<Artist> { artist };
 
             _albumRepository.Edit(editAlbum);
-            return RedirectToAction(nameof(Index), "Album");
+
+            var nameController = ControllerHelper.GetName<AlbumController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
             _albumRepository.RemoveById(id);
-            return RedirectToAction(nameof(Index), "Album");
+
+            var nameController = ControllerHelper.GetName<AlbumController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
     }
 }

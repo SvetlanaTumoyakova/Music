@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Music.Data;
 using Music.Data.Repositories;
 using Music.Data.Repositories.Interfaces;
+using Music.Helper;
 using Music.Models;
 using Music.Uploadcare;
 using Music.ViewModel;
@@ -46,7 +47,9 @@ namespace Music.Controllers
                 UrlImg = urlImg,
             };
             _artistRepository.Add(artist);
-            return RedirectToAction(nameof(Index), "Home");
+
+            var nameController = ControllerHelper.GetName<HomeController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
         public IActionResult Edit(int id)
         {
@@ -82,14 +85,17 @@ namespace Music.Controllers
                 editArtist.UrlImg = urlImg;
             }
             _artistRepository.Edit(editArtist);
-            return RedirectToAction(nameof(Index), "Home");
+            var nameController = ControllerHelper.GetName<HomeController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
             _artistRepository.RemoveById(id);
-            return RedirectToAction(nameof(Index), "Home");
+
+            var nameController = ControllerHelper.GetName<HomeController>();
+            return RedirectToAction(nameof(Index), nameController);
         }
         public IActionResult About()
         {
