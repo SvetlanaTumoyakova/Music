@@ -8,19 +8,30 @@ namespace Music.Controllers
 {
     public class AlbumController : Controller
     {
+
         private readonly IAlbumRepository _albumRepository;
-        private readonly IFileRepository _photoRepository;
         private readonly IArtistRepository _artistRepository;
-        public AlbumController(IAlbumRepository albumRepository, IFileRepository photoRepository, IArtistRepository artistRepository)
+        private readonly ISearchRepository _searchRepository;
+        private readonly IFileRepository _photoRepository;
+
+        public AlbumController(IAlbumRepository albumRepository, IArtistRepository artistRepository, ISearchRepository searchRepository, IFileRepository photoRepository)
         {
             _albumRepository = albumRepository;
-            _photoRepository = photoRepository;
             _artistRepository = artistRepository;
+            _searchRepository = searchRepository;
+            _photoRepository = photoRepository;
         }
         public async Task<IActionResult> Index()
         {
             var albums = await _albumRepository.GetAllAsync();
             return View(albums);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string name)
+        {
+            var foundAlbum = await _searchRepository.SearchAsync<Album>(name);
+            return View(foundAlbum);
         }
 
         public async Task<IActionResult> Details(int id)

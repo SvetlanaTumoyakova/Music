@@ -17,6 +17,7 @@ options.UseSqlServer(connection));
 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 builder.Services.AddScoped<ISongRepository, SongRepository>();
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

@@ -12,5 +12,14 @@ namespace Music.Data.Repositories
             var songs = await context.Songs.AsNoTracking().ToListAsync();
             return songs;
         }
+        public async Task<Song> GetById(int id)
+        {
+            var song = await context.Songs
+           .Include(song => song.Albums)
+           .FirstOrDefaultAsync(song => song.Id == id);
+            return song;
+        }
+
+
     }
 }

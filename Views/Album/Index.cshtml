@@ -4,6 +4,14 @@
 @model List<Album>
 <div class="container py-5">
     <h1 class="text-center mb-4 display-5">Популярные Альбомы</h1>
+
+    <form asp-controller="Album" asp-action="Index">
+        <p>
+            <label>Название: <input type="text" name="name" /></label>
+            <input type="submit" value="Поиск" />
+        </p>
+    </form>
+
     <a class="btn btn-primary mb-3" asp-controller="Album" asp-action="Create">Добавить новый альбом</a>
     <div class="row">
         @foreach (var album in Model)

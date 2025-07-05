@@ -16,10 +16,12 @@ namespace Music.Controllers
     public class HomeController : Controller
     {
         private readonly IArtistRepository _artistRepository;
+        private readonly ISearchRepository _searchRepository;
         private readonly IFileRepository _photoRepository;
-        public HomeController(IArtistRepository artistRepository, IFileRepository photoRepository)
+        public HomeController(IArtistRepository artistRepository, ISearchRepository searchRepository, IFileRepository photoRepository)
         {
             _artistRepository = artistRepository;
+            _searchRepository = searchRepository;
             _photoRepository = photoRepository;
         }
         public async Task<IActionResult> Index()
@@ -27,6 +29,14 @@ namespace Music.Controllers
             var artists = await _artistRepository.GetAllAsync();
             return View(artists);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string name)
+        {
+            var foundArtist = await _searchRepository.SearchAsync<Artist>(name);
+            return View(foundArtist);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var artist = await _artistRepository.GetArtistDetailsByIdAsync(id);

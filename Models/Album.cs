@@ -1,6 +1,8 @@
-﻿namespace Music.Models
+﻿using Music.Data.Repositories.Interfaces;
+
+namespace Music.Models
 {
-    public class Album
+    public class Album : ISearchable
     {
         public int Id { get; set; }
         public required string Name { get; set; }
