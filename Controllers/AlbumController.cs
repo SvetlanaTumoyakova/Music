@@ -30,7 +30,15 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string name)
         {
-            var foundAlbum = await _searchRepository.SearchAsync<Album>(name);
+            List<Album> foundAlbum;     
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                foundAlbum = await _albumRepository.GetAllAsync();
+            }
+            else
+            {
+                foundAlbum = await _searchRepository.SearchAsync<Album>(name);
+            }
             return View(foundAlbum);
         }
 

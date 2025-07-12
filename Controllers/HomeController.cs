@@ -33,13 +33,44 @@ namespace Music.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string name)
         {
-            var foundArtist = await _searchRepository.SearchAsync<Artist>(name);
-            return View(foundArtist);
+            List<Artist> foundArtists;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                foundArtists = await _artistRepository.GetAllAsync(); 
+            }
+            else
+            {
+                foundArtists = await _searchRepository.SearchAsync<Artist>(name);
+            }
+            return View(foundArtists);
         }
 
         public async Task<IActionResult> Details(int id)
         {
             var artist = await _artistRepository.GetArtistDetailsByIdAsync(id);
+            return View(artist);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Details(int artistId, string name)
+        {
+            var artist = await _artistRepository.GetArtistDetailsByIdAsync(artistId);
+            List<Album> foundArtistAlbums;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                foundArtistAlbums = artist.Albums ?? new List<Album>();
+            }
+            else
+            {
+                foundArtistAlbums = await _searchRepository.SearchAlbumsByArtistIdAsync(artistId, name);
+            }
+
+            if (foundArtistAlbums == null || foundArtistAlbums.Count == 0)
+            {
+                foundArtistAlbums = new List<Album>();
+            }
+            artist.Albums = foundArtistAlbums;
+
             return View(artist);
         }
         public IActionResult Create()
